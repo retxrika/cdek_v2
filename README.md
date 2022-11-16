@@ -10,7 +10,7 @@
 - ### Авторизация.
 
 ```python
-from cdek2 import CDEK2Client
+from cdek_v2 import CDEK2Client
 
 cdek_client = CDEK2Client('your_client_id', 'your_client_secret')
 ```
