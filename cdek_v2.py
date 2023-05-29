@@ -22,19 +22,19 @@ class CDEK2Client:
                                         client_id=client_id,
                                         client_secret=client_secret)
 
-    '''
-    Возвращает ответ сервера на отправленный запрос.
-
-    url - Путь к требуемому методу.
-    data - Параметры запроса.
-    method - POST/GET.
-    '''
     def __exec_request(
             self, 
             url: str, 
             data: Dict = None, 
             method: str = 'GET',
     ) -> requests.Response:
+        '''
+        Возвращает ответ сервера на отправленный запрос.
+
+        url - Путь к требуемому методу.
+        data - Параметры запроса.
+        method - POST/GET.
+        '''
 
         if isinstance(data, dict):
             data = remap(data, lambda p, k, v: v is not None)
@@ -63,20 +63,20 @@ class CDEK2Client:
 
         return response
 
-    '''
-    Возвращает заголовок запроса с токеном авторизации 
-    и форматом JSON (Content-Type: application/json).
-
-    grant_type - Тип аутентификации, доступное значение.
-    client_id - идентификатор клиента, равен Accoun.
-    client_secret - секретный ключ клиента, равен Secure password.
-    '''
     def __get_header_request(
             self, 
             grant_type : str, 
             client_id : str,
             client_secret : str
     ) -> Dict[str, str]:
+        '''
+        Возвращает заголовок запроса с токеном авторизации 
+        и форматом JSON (Content-Type: application/json).
+
+        grant_type - Тип аутентификации, доступное значение.
+        client_id - идентификатор клиента, равен Accoun.
+        client_secret - секретный ключ клиента, равен Secure password.
+        '''
         data = {
             'grant_type': grant_type,
             'client_id': client_id,
@@ -97,19 +97,19 @@ class CDEK2Client:
                 }
         return header
 
-    '''
-    Возвращает пункты выдачи заказов.
-
-    city_code - Код населенного пункта СДЭК.
-    type - Тип офиса, может принимать значения (PVZ/POSTAMAT/ALL).
-    country_code - Код страны в формате ISO_3166-1_alpha-2.
-    '''
     def get_delivery_points(
             self, 
             city_code: int = None,
             type: str = 'PVZ',
             country_code: str = 'RU',
     ) -> Optional[Dict]:
+        '''
+        Возвращает пункты выдачи заказов.
+
+        city_code - Код населенного пункта СДЭК.
+        type - Тип офиса, может принимать значения (PVZ/POSTAMAT/ALL).
+        country_code - Код страны в формате ISO_3166-1_alpha-2.
+        '''
             
         data = {
             'city_code': city_code,
@@ -122,22 +122,6 @@ class CDEK2Client:
                     ).json()
         return response
 
-    '''
-    Возвращает стоимость доставки.
-
-    sender_city_code - Код населенного пункта отправителя СДЭК.
-    receiver_city_code - Код населенного пункта получателя СДЭК.
-    goods - Товары в виде списка, пример:
-    [
-        {
-            'weight': 1000,
-            'length': 10,
-            'width': 10,
-            'height': 10,
-        },
-    ]
-    tariff_code - Код тарифа СДЭК.
-    '''
     def get_delivery_cost(
             self,
             sender_city_code : int,
@@ -145,6 +129,22 @@ class CDEK2Client:
             goods: Optional[Dict],
             tariff_code: int = 483, # Экспресс склад-склад.
     ) -> Dict:
+        '''
+        Возвращает стоимость доставки.
+
+        sender_city_code - Код населенного пункта отправителя СДЭК.
+        receiver_city_code - Код населенного пункта получателя СДЭК.
+        goods - Товары в виде списка, пример:
+        [
+            {
+                'weight': 1000,
+                'length': 10,
+                'width': 10,
+                'height': 10,
+            },
+        ]
+        tariff_code - Код тарифа СДЭК.
+        '''
         data = {
             'tariff_code': tariff_code,
             'from_location': {
